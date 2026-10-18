@@ -668,56 +668,24 @@ html.has-splash, html.has-splash body { overflow: hidden; }
 .rgb-layer.r { color: #FF0000; }
 .rgb-layer.g { color: #00FF00; }
 .rgb-layer.b { color: #0000FF; }
-.splash.is-on .rgb-layer { animation: 1.7s cubic-bezier(.2, .8, .2, 1) both; }
-.splash.is-on .rgb-layer.r { animation-name: rgb-r; }
-.splash.is-on .rgb-layer.g { animation-name: rgb-g; }
-.splash.is-on .rgb-layer.b { animation-name: rgb-b; }
-@keyframes rgb-r { from { transform: translate(-0.24em, -0.07em); opacity: 0; } 25% { opacity: 1; } to { transform: none; } }
+.rgb-layer.r { transform: translate(-0.022em, 0); }
+.rgb-layer.b { transform: translate(0.022em, 0); }
+.splash.is-on .rgb-layer.r { animation: rgb-r 1.7s cubic-bezier(.2, .8, .2, 1) both, glitch-r 7s 2.6s infinite; }
+.splash.is-on .rgb-layer.g { animation: rgb-g 1.7s cubic-bezier(.2, .8, .2, 1) both, glitch-g 7s 2.6s infinite; }
+.splash.is-on .rgb-layer.b { animation: rgb-b 1.7s cubic-bezier(.2, .8, .2, 1) both, glitch-b 7s 2.6s infinite; }
+@keyframes glitch-r { 0%, 91%, 100% { transform: translate(-0.022em, 0); } 93% { transform: translate(-0.09em, 0.02em); } 95% { transform: translate(0.03em, -0.02em); } 97% { transform: translate(-0.05em, 0); } }
+@keyframes glitch-g { 0%, 91%, 100% { transform: none; } 93% { transform: translate(0, -0.03em); } 95% { transform: translate(0, 0.03em); } 97% { transform: none; } }
+@keyframes glitch-b { 0%, 91%, 100% { transform: translate(0.022em, 0); } 93% { transform: translate(0.09em, -0.02em); } 95% { transform: translate(-0.03em, 0.02em); } 97% { transform: translate(0.05em, 0); } }
+@keyframes rgb-r { from { transform: translate(-0.24em, -0.07em); opacity: 0; } 25% { opacity: 1; } to { transform: translate(-0.022em, 0); } }
 @keyframes rgb-g { from { transform: translate(0, 0.14em); opacity: 0; } 25% { opacity: 1; } to { transform: none; } }
-@keyframes rgb-b { from { transform: translate(0.24em, -0.07em); opacity: 0; } 25% { opacity: 1; } to { transform: none; } }
+@keyframes rgb-b { from { transform: translate(0.24em, -0.07em); opacity: 0; } 25% { opacity: 1; } to { transform: translate(0.022em, 0); } }
 
-.splash-grid { flex: 1; min-height: 0; display: grid; align-content: center; gap: clamp(8px, 1.3vh, 14px); }
-.s-card {
-  position: relative;
-  display: flex; flex-direction: column;
-  min-width: 0; min-height: 0;
-  margin: 0; padding: 0;
-  overflow: hidden;
-  border: 1px solid #2C3039;
-  border-radius: 0;
-  background: #0D0F13;
-  color: #F2F3F5;
-  font: inherit;
-  text-align: right;
-  cursor: pointer;
-  transition: border-color .2s;
-}
-.splash.is-on .s-card { animation: s-in .55s ease-out both; animation-delay: calc(.9s + var(--i, 0) * 70ms); }
-@keyframes s-in { from { opacity: 0; transform: scale(.94); } to { opacity: 1; transform: none; } }
-.s-card:hover { border-color: #FFFFFF; }
-.s-card:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 2px; }
-.s-title {
-  flex: none;
-  display: block;
-  height: 30px;
-  padding: 0 10px;
-  line-height: 29px;
-  border-bottom: 1px solid #2C3039;
-  font-size: 14px; font-weight: 700;
-  white-space: nowrap; overflow: hidden;
-}
-.s-title > span { display: block; overflow: hidden; text-overflow: ellipsis; }
-.is-tight .s-title { height: 42px; display: flex; align-items: center; padding: 0 6px; font-size: 12.5px; line-height: 1.25; }
-.is-tight .s-title > span { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-.s-card.is-bonus .s-title { color: #FFD23F; }
-.s-card.is-solved::after {
-  content: "";
-  position: absolute; top: 9px; left: 9px;
-  width: 10px; height: 10px;
-  background: #22C55E;
-}
-.s-media { flex: 1; min-height: 0; display: grid; place-items: center; padding: 8px; }
-.s-stack { position: relative; display: block; overflow: hidden; background: #1A1D23; }
+.splash-grid { flex: 1; min-height: 0; display: grid; place-content: center; }
+.s-tile { position: relative; min-width: 0; min-height: 0; }
+.splash.is-on .s-tile { animation: s-in .6s ease-out both; animation-delay: calc(1s + var(--i, 0) * 75ms); }
+@keyframes s-in { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: none; } }
+.s-tile .s-stack { position: absolute; inset: 0; }
+.s-stack { display: block; overflow: hidden; background: #14161B; }
 .s-stack canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
 .s-stack .s-after { clip-path: inset(0 0 0 100%); }
 .s-line {
@@ -727,8 +695,8 @@ html.has-splash, html.has-splash body { overflow: hidden; }
   background: #FFFFFF;
   box-shadow: 0 0 10px 2px rgba(255, 255, 255, .8);
 }
-.s-card.is-live .s-after { animation: s-after 7s ease-in-out var(--d, 0s) infinite; }
-.s-card.is-live .s-line { display: block; animation: s-line 7s ease-in-out var(--d, 0s) infinite; }
+.s-tile.is-live .s-after { animation: s-after 7s ease-in-out var(--d, 0s) infinite; }
+.s-tile.is-live .s-line { display: block; animation: s-line 7s ease-in-out var(--d, 0s) infinite; }
 @keyframes s-after {
   0%, 12%   { clip-path: inset(0 0 0 100%); }
   44%, 62%  { clip-path: inset(0 0 0 0); }
@@ -759,9 +727,9 @@ html.has-splash, html.has-splash body { overflow: hidden; }
 .btn-start:focus-visible { outline: 3px solid #FFFFFF; outline-offset: 8px; }
 
 @media (prefers-reduced-motion: reduce) {
-  .splash.is-on .rgb-layer, .splash.is-on .s-card { animation: none; }
-  .s-card.is-live .s-after { animation: none; clip-path: inset(0 0 0 50%); }
-  .s-card.is-live .s-line { animation: none; right: 50%; }
+  .splash.is-on .rgb-layer, .splash.is-on .s-tile { animation: none; }
+  .s-tile.is-live .s-after { animation: none; clip-path: inset(0 0 0 50%); }
+  .s-tile.is-live .s-line { animation: none; right: 50%; }
   .btn-start { transition: none; }
 }
 
@@ -779,7 +747,7 @@ html.has-splash, html.has-splash body { overflow: hidden; }
       <span class="rgb-layer b" aria-hidden="true">תרגול עיבוד תמונה</span>
     </h1>
   </div>
-  <div class="splash-grid" id="splash-grid"></div>
+  <div class="splash-grid" id="splash-grid" aria-hidden="true"></div>
   <div class="splash-foot">
     <p class="splash-ask">מוכנים לכתוב את הקוד שעורך את כל התמונות האלו?!</p>
     <button type="button" class="btn-start" id="start-btn">יאללה מתחילים!</button>
@@ -861,7 +829,7 @@ html.has-splash, html.has-splash body { overflow: hidden; }
 <dialog class="milestone export-dialog" id="export-dialog" aria-labelledby="export-title">
   <form id="export-form">
     <h2 id="export-title">קובץ הגשה למורה</h2>
-    <p>הקובץ כולל את הקוד שכתבתם בכל השאלות, מסודר לפי סדר השאלות, ויורד למחשב כמסמך Word.</p>
+    <p>הקובץ כולל את הקוד שכתבתם בכל השאלות, מסודר לפי סדר השאלות, ויורד למחשב כקובץ PDF.</p>
     <label for="export-name">שם מלא</label>
     <input id="export-name" type="text" autocomplete="name" maxlength="60" required>
     <label for="export-class">כיתה (לא חובה)</label>
@@ -1474,7 +1442,7 @@ def check(result, inp, expected, out):
       <p>כתבו קוד שמעביר את הדמות לרקע החדש: כל פיקסל ירוק מוחלף בפיקסל מהרקע, וכל פיקסל אחר נשאר.</p>`,
     hint: `
       <ul>
-        <li><code>zip(img_green, img_bg)</code> מאפשר לעבור על שתי הרשימות יחד.</li>
+        <li>הקוד המלא נמצא גם במצגת.</li>
         <li>המסך אף פעם לא בדיוק <code>(0, 255, 0)</code>. איך תגדירו פיקסל "ירוק מספיק"? נסו כמה תנאים ובחרו את הטוב ביותר.</li>
       </ul>`,
     starter: "new_img = []\n",
@@ -1568,7 +1536,7 @@ def check(result, inp, expected, out):
     goal: `
       <p>בפרסומות רואים לפעמים תמונה בשחור-לבן, שבה רק חפץ אחד אדום נשאר בצבע.</p>
       <p>כתבו קוד שמשאיר בצבע רק פיקסלים "אדומים", והופך את כל השאר לאפור. החליטו בעצמכם מתי פיקסל נחשב אדום.</p>`,
-    hint: `לא מספיק ש-<code>r</code> גדול. מה עם פיקסל לבן?`,
+    hint: `חפשו פיקסל שהוא מספיק אדום, למשל: <code>r > 150</code>, ושאר הצבעים נמוכים: <code>g < 100</code> ו-<code>b < 100</code>.`,
     starter: "new_img = []\n",
     solution: "new_img = []\n\nfor r, g, b in img:\n    if r > g + 50 and r > b + 50:\n        new_img.append((r, g, b))\n    else:\n        avg = (r + g + b) // 3\n        new_img.append((avg, avg, avg))\n",
     // אדום מובהק חייב להישאר בצבע, ופיקסל שבכלל לא אדום חייב להפוך לאפור. באמצע: לבחירת התלמידים.
@@ -1581,7 +1549,7 @@ def check(result, inp, expected, out):
         if not same and not gray:
             return "כל פיקסל צריך להישאר כמו שהוא, או להפוך לאפור (שלושה ערכים שווים)."
         redness = r - max(g, b)
-        if redness > 90 and max(g, b) * 20 < r * 9 and not same:
+        if redness > 90 and r > 160 and max(g, b) * 20 < r * 9 and not same:
             wrong += 1
         elif redness < 30 and not gray:
             wrong += 1
@@ -1602,7 +1570,7 @@ def check(result, inp, expected, out):
       <p>מצלמת אבטחה מצלמת תמונה כל שנייה, ומשווה בין תמונות. בשאלה הזו יש שתי תמונות מאותה נקודת מבט: <code>img</code> (לפני) ו-<code>img2</code> (אחרי).</p>
       <p>פיקסל נחשב "שונה" אם סכום ההפרשים בערך מוחלט בין שלושת הערוצים גדול מ-60. כתבו קוד שסופר כמה פיקסלים שונים. אם יש יותר מ-100, הדפיסו "זוהתה תזוזה!", ואחרת הדפיסו "הכול שקט".</p>
       <p>בונוס: בנו גם את <code>new_img</code>, שבה כל פיקסל שהשתנה צבוע באדום, וכל השאר נשארים כמו ב-<code>img2</code>.</p>`,
-    hint: `<code>abs(x)</code> מחזיר את הערך המוחלט, למשל <code>abs(-7)</code> הוא 7. כמו במסך הירוק, <code>zip</code> עוזר לעבור על שתי התמונות יחד.`,
+    hint: `<code>abs(x)</code> מחזיר את הערך המוחלט, למשל <code>abs(-7)</code> הוא 7.`,
     resultOptional: true,
     showsGoalVar: false,
     starter: "changed = 0\n",
@@ -1634,7 +1602,7 @@ def check(result, inp, expected, out):
     bonus: true,
     images: [
       { name: "img", file: "q11", sample: "chelsea", label: "תמונה תמימה" },
-      { name: "img_secret", text: "סוד!", label: "המסר" },
+      { name: "img_secret", text: "כתבו כאן", splashText: "סוד!", label: "המסר" },
     ],
     splashFrom: "img_secret",   // במסך הפתיחה: מהמסר אל התמונה שהוא מוחבא בה
     goal: `
@@ -2073,14 +2041,15 @@ function randomPicks(n, k) {
 
 const secretTextOf = (q, spec) => (secretTexts[q.id] != null ? secretTexts[q.id] : spec.text);
 
-async function buildSlot(q, spec, main, side) {
+async function buildSlot(q, spec, main, side, forSplash = false) {
   const up = uploads[q.id] && uploads[q.id][spec.name];
   if (up) {
     const d = main ? fitCover(up.src, main.w, main.h) : fitMain(up.src, side);
     return Object.assign(d, { source: "upload", fileName: up.name });
   }
   if (spec.text != null) {
-    return Object.assign(makeTextImage(secretTextOf(q, spec), main.w, main.h), { source: "text" });
+    const text = forSplash && spec.splashText ? spec.splashText : secretTextOf(q, spec);
+    return Object.assign(makeTextImage(text, main.w, main.h), { source: "text" });
   }
   if (spec.hidden) {
     const base = fitSquare(await loadSource(spec.hidden.file, spec.hidden.base), side);
@@ -2866,128 +2835,206 @@ function showFinale(colors) {
 $("finale-close").addEventListener("click", () => closeDialog($("finale")));
 
 /* ================================================================
-   קובץ הגשה למורה: כל הקוד של התלמיד, במסמך Word (docx)
+   קובץ הגשה למורה: כל הקוד של התלמיד, בקובץ PDF.
+   כל עמוד מצויר על canvas (כך העברית מוצגת נכון) ונשמר כתמונה בתוך ה-PDF.
    ================================================================ */
 const STUDENT_KEY = "image-processing:student";
+const PDF_W = 595.28, PDF_H = 841.89;   // A4 בנקודות
+const PDF_SCALE = 2.5;                  // פיקסלים לנקודה, בשביל טקסט חד
+const PDF_MARGIN = 56;
+const PDF_SANS = '"IBM Plex Sans Hebrew", Arial, sans-serif';
+const PDF_MONO = '"IBM Plex Mono", Consolas, "Courier New", monospace';
 
-function crc32(bytes) {
-  let table = crc32.table;
-  if (!table) {
-    table = crc32.table = new Uint32Array(256);
-    for (let n = 0; n < 256; n++) {
-      let c = n;
-      for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1;
-      table[n] = c >>> 0;
-    }
-  }
-  let crc = 0xFFFFFFFF;
-  for (let i = 0; i < bytes.length; i++) crc = table[(crc ^ bytes[i]) & 0xFF] ^ (crc >>> 8);
-  return (crc ^ 0xFFFFFFFF) >>> 0;
-}
-
-/* קובץ zip פשוט (בלי דחיסה) */
-function makeZip(files) {
-  const enc = new TextEncoder();
-  const parts = [], central = [];
-  let offset = 0;
-  for (const f of files) {
-    const name = enc.encode(f.name);
-    const data = enc.encode(f.text);
-    const crc = crc32(data);
-    const local = new DataView(new ArrayBuffer(30));
-    local.setUint32(0, 0x04034B50, true);
-    local.setUint16(4, 20, true);
-    local.setUint16(8, 0, true);
-    local.setUint16(12, 33, true);           // 1.1.1980
-    local.setUint32(14, crc, true);
-    local.setUint32(18, data.length, true);
-    local.setUint32(22, data.length, true);
-    local.setUint16(26, name.length, true);
-    parts.push(local, name, data);
-    const cen = new DataView(new ArrayBuffer(46));
-    cen.setUint32(0, 0x02014B50, true);
-    cen.setUint16(4, 20, true);
-    cen.setUint16(6, 20, true);
-    cen.setUint16(14, 33, true);
-    cen.setUint32(16, crc, true);
-    cen.setUint32(20, data.length, true);
-    cen.setUint32(24, data.length, true);
-    cen.setUint16(28, name.length, true);
-    cen.setUint32(42, offset, true);
-    central.push(cen, name);
-    offset += 30 + name.length + data.length;
-  }
-  const cenSize = central.reduce((n, p) => n + p.byteLength, 0);
-  const end = new DataView(new ArrayBuffer(22));
-  end.setUint32(0, 0x06054B50, true);
-  end.setUint16(8, files.length, true);
-  end.setUint16(10, files.length, true);
-  end.setUint32(12, cenSize, true);
-  end.setUint32(16, offset, true);
-  return new Blob([...parts, ...central, end], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
-}
-
-const W_NS = 'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"';
-const xmlText = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-
-function wRun(text, o = {}) {
-  let props = "";
-  if (o.font) props += `<w:rFonts w:ascii="${o.font}" w:hAnsi="${o.font}" w:cs="${o.font}"/>`;
-  if (o.bold) props += "<w:b/><w:bCs/>";
-  if (o.color) props += `<w:color w:val="${o.color}"/>`;
-  if (o.size) props += `<w:sz w:val="${o.size}"/><w:szCs w:val="${o.size}"/>`;
-  if (o.rtl) props += "<w:rtl/>";
-  return `<w:r>${props ? `<w:rPr>${props}</w:rPr>` : ""}<w:t xml:space="preserve">${xmlText(text)}</w:t></w:r>`;
-}
-/* פסקה בעברית (מימין לשמאל) */
-function wPara(runs, style) {
-  return `<w:p><w:pPr>${style ? `<w:pStyle w:val="${style}"/>` : ""}<w:bidi/></w:pPr>${runs}</w:p>`;
-}
-const wHebrew = (text, style, o = {}) => wPara(wRun(text, Object.assign({ rtl: true }, o)), style);
-/* שורת קוד (משמאל לימין, גופן קבוע, רקע אפור) */
-function wCodeLine(text, first, last) {
-  const space = `<w:spacing w:before="${first ? 60 : 0}" w:after="${last ? 160 : 0}" w:line="264" w:lineRule="auto"/>`;
-  const shd = '<w:shd w:val="clear" w:color="auto" w:fill="F1F2F4"/>';
-  return `<w:p><w:pPr>${shd}${space}<w:ind w:left="113" w:right="113"/><w:jc w:val="left"/></w:pPr>${wRun(text || " ", { font: "Consolas", size: 20 })}</w:p>`;
-}
-
-function buildSubmission(name, klass) {
+function submissionBlocks(name, klass) {
   const now = new Date();
   const date = `${now.getDate()}.${now.getMonth() + 1}.${now.getFullYear()}`;
   const solvedCount = QUESTIONS.filter((q) => state.solved[q.id]).length;
-  let body = "";
-  body += wHebrew("הגשה: עיבוד תמונה", "Title");
-  body += wHebrew(`שם: ${name}`, null, { bold: true });
-  if (klass) body += wHebrew(`כיתה: ${klass}`);
-  body += wHebrew(`תאריך: ${date}`);
-  body += wHebrew(`נפתרו ${solvedCount} מתוך ${QUESTIONS.length} שאלות`);
+  const blocks = [
+    { kind: "title", text: "הגשה: עיבוד תמונה" },
+    { kind: "meta", text: `שם: ${name}`, bold: true },
+  ];
+  if (klass) blocks.push({ kind: "meta", text: `כיתה: ${klass}` });
+  blocks.push({ kind: "meta", text: `תאריך: ${date}` });
+  blocks.push({ kind: "meta", text: `נפתרו ${solvedCount} מתוך ${QUESTIONS.length} שאלות` });
   QUESTIONS.forEach((q, i) => {
-    body += wHebrew(questionTitle(i) + (q.bonus ? " (בונוס)" : ""), "Heading1");
     const solved = !!state.solved[q.id];
-    body += wHebrew(solved ? "סטטוס: נפתרה" : "סטטוס: לא נפתרה", null, { color: solved ? "0B7A3B" : "9A4D00", bold: true });
     const code = typeof state.codes[q.id] === "string" ? state.codes[q.id].replace(/\t/g, "    ").replace(/\s+$/, "") : "";
-    if (!code) {
-      body += wHebrew("לא נכתב קוד בשאלה הזו.", null, { color: "666C76" });
-      return;
-    }
-    const lines = code.split("\n");
-    lines.forEach((line, k) => { body += wCodeLine(line, k === 0, k === lines.length - 1); });
+    blocks.push({
+      kind: "question",
+      title: questionTitle(i) + (q.bonus ? " (בונוס)" : ""),
+      status: solved ? "סטטוס: נפתרה" : "סטטוס: לא נפתרה",
+      solved,
+      lines: code ? code.split("\n") : null,
+    });
   });
-  const document = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:document ${W_NS}><w:body>${body}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="708" w:footer="708" w:gutter="0"/><w:bidi/></w:sectPr></w:body></w:document>`;
-  const styles = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:styles ${W_NS}><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Arial" w:eastAsia="Arial" w:hAnsi="Arial" w:cs="Arial"/><w:sz w:val="24"/><w:szCs w:val="24"/><w:lang w:val="en-US" w:eastAsia="en-US" w:bidi="he-IL"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="120" w:line="276" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style><w:style w:type="paragraph" w:styleId="Title"><w:name w:val="Title"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/><w:pPr><w:spacing w:after="240"/></w:pPr><w:rPr><w:b/><w:bCs/><w:sz w:val="44"/><w:szCs w:val="44"/></w:rPr></w:style><w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/><w:pPr><w:keepNext/><w:spacing w:before="360" w:after="80"/><w:outlineLvl w:val="0"/></w:pPr><w:rPr><w:b/><w:bCs/><w:sz w:val="30"/><w:szCs w:val="30"/></w:rPr></w:style></w:styles>`;
-  const R_NS = 'xmlns="http://schemas.openxmlformats.org/package/2006/relationships"';
-  return makeZip([
-    { name: "[Content_Types].xml", text: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>` },
-    { name: "_rels/.rels", text: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships ${R_NS}><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>` },
-    { name: "word/_rels/document.xml.rels", text: `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Relationships ${R_NS}><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>` },
-    { name: "word/document.xml", text: document },
-    { name: "word/styles.xml", text: styles },
-  ]);
+  return blocks;
+}
+
+/* חלוקה לעמודים. כל פעולת ציור שומרת את המיקום שלה בנקודות. */
+function paginate(blocks, ctx) {
+  const pages = [[]];
+  const bottom = PDF_H - PDF_MARGIN - 18;
+  const codeW = PDF_W - 2 * PDF_MARGIN - 20;
+  let y = PDF_MARGIN;
+  const page = () => pages[pages.length - 1];
+  const newPage = () => { pages.push([]); y = PDF_MARGIN; };
+  ctx.font = `9.5px ${PDF_MONO}`;
+  const charW = ctx.measureText("M").width || 5.7;
+  const perLine = Math.max(20, Math.floor(codeW / charW));
+  for (const b of blocks) {
+    if (b.kind === "title") {
+      page().push({ op: "title", y, text: b.text });
+      y += 46;
+    } else if (b.kind === "meta") {
+      page().push({ op: "text", y, text: b.text, size: 12, bold: b.bold, color: "#15171B" });
+      y += 19;
+    } else if (b.kind === "question") {
+      const wrapped = [];
+      (b.lines || []).forEach((line) => {
+        if (line.length <= perLine) wrapped.push(line);
+        else for (let k = 0; k < line.length; k += perLine) wrapped.push((k ? "  " : "") + line.slice(k, k + perLine));
+      });
+      const head = 20 + 24 + 20;
+      const firstPart = wrapped.length ? 16 + Math.min(3, wrapped.length) * 13.5 : 18;
+      if (y + head + firstPart > bottom) newPage(); else y += 20;
+      page().push({ op: "heading", y, text: b.title });
+      y += 24;
+      page().push({ op: "text", y, text: b.status, size: 11.5, bold: true, color: b.solved ? "#0B7A3B" : "#9A4D00" });
+      y += 20;
+      if (!wrapped.length) {
+        page().push({ op: "text", y, text: "לא נכתב קוד בשאלה הזו.", size: 11.5, color: "#666C76" });
+        y += 18;
+        continue;
+      }
+      let boxTop = y;
+      y += 8;
+      wrapped.forEach((line) => {
+        if (y + 13.5 > bottom) {
+          page().push({ op: "box", y: boxTop, h: y + 8 - boxTop });
+          newPage();
+          boxTop = y;
+          y += 8;
+        }
+        page().push({ op: "code", y, text: line });
+        y += 13.5;
+      });
+      page().push({ op: "box", y: boxTop, h: y + 8 - boxTop });
+      y += 8;
+    }
+  }
+  return pages;
+}
+
+function drawPdfPage(ops, index, total) {
+  const c = document.createElement("canvas");
+  c.width = Math.round(PDF_W * PDF_SCALE);
+  c.height = Math.round(PDF_H * PDF_SCALE);
+  const ctx = c.getContext("2d");
+  ctx.scale(PDF_SCALE, PDF_SCALE);
+  ctx.fillStyle = "#FFFFFF";
+  ctx.fillRect(0, 0, PDF_W, PDF_H);
+  const right = PDF_W - PDF_MARGIN;
+  ctx.textBaseline = "top";
+  // קודם הרקע של בלוקי הקוד, ואז הטקסט
+  for (const o of ops) {
+    if (o.op !== "box") continue;
+    ctx.fillStyle = "#F1F2F4";
+    ctx.fillRect(PDF_MARGIN, o.y, PDF_W - 2 * PDF_MARGIN, o.h);
+    ctx.fillStyle = "#D6D9DE";
+    ctx.fillRect(PDF_W - PDF_MARGIN - 3, o.y, 3, o.h);
+  }
+  for (const o of ops) {
+    if (o.op === "title") {
+      [["#FF0000", 0, 0], ["#00FF00", 9, 0], ["#0000FF", 0, 9], ["#15171B", 9, 9]].forEach(([col, dx, dy]) => {
+        ctx.fillStyle = col;
+        ctx.fillRect(right - 17 + dx, o.y + 6 + dy, 8, 8);
+      });
+      ctx.direction = "rtl";
+      ctx.textAlign = "right";
+      ctx.fillStyle = "#15171B";
+      ctx.font = `700 24px ${PDF_SANS}`;
+      ctx.fillText(o.text, right - 28, o.y);
+      ctx.fillRect(PDF_MARGIN, o.y + 36, PDF_W - 2 * PDF_MARGIN, 1.5);
+    } else if (o.op === "heading") {
+      ctx.direction = "rtl";
+      ctx.textAlign = "right";
+      ctx.fillStyle = "#15171B";
+      ctx.font = `700 15px ${PDF_SANS}`;
+      ctx.fillText(o.text, right, o.y);
+    } else if (o.op === "text") {
+      ctx.direction = "rtl";
+      ctx.textAlign = "right";
+      ctx.fillStyle = o.color;
+      ctx.font = `${o.bold ? 700 : 400} ${o.size}px ${PDF_SANS}`;
+      ctx.fillText(o.text, right, o.y);
+    } else if (o.op === "code") {
+      ctx.direction = "ltr";
+      ctx.textAlign = "left";
+      ctx.fillStyle = "#15171B";
+      ctx.font = `9.5px ${PDF_MONO}`;
+      ctx.fillText(o.text, PDF_MARGIN + 10, o.y);
+    }
+  }
+  ctx.direction = "rtl";
+  ctx.textAlign = "center";
+  ctx.fillStyle = "#8A8F98";
+  ctx.font = `9px ${PDF_SANS}`;
+  ctx.fillText(`עמוד ${index + 1} מתוך ${total}`, PDF_W / 2, PDF_H - PDF_MARGIN + 18);
+  return c;
+}
+
+const canvasToJpeg = (c) => new Promise((resolve, reject) => {
+  c.toBlob((blob) => (blob ? blob.arrayBuffer().then((b) => resolve(new Uint8Array(b)), reject) : reject(new Error("jpeg"))), "image/jpeg", 0.9);
+});
+
+/* קובץ PDF פשוט: בכל עמוד תמונת JPEG אחת בגודל העמוד */
+function makePdf(pages, title) {
+  const enc = new TextEncoder();
+  const chunks = [];
+  const offsets = [];
+  let pos = 0;
+  const push = (data) => { const b = typeof data === "string" ? enc.encode(data) : data; chunks.push(b); pos += b.length; };
+  const obj = (id, write) => { offsets[id] = pos; push(`${id} 0 obj\n`); write(); push("\nendobj\n"); };
+  let titleHex = "FEFF";
+  for (const ch of title) titleHex += ch.charCodeAt(0).toString(16).padStart(4, "0").toUpperCase();
+  push("%PDF-1.4\n%\u00E2\u00E3\u00CF\u00D3\n");
+  obj(1, () => push("<< /Type /Catalog /Pages 2 0 R >>"));
+  obj(2, () => push(`<< /Type /Pages /Kids [${pages.map((p, i) => `${4 + 3 * i} 0 R`).join(" ")}] /Count ${pages.length} >>`));
+  obj(3, () => push(`<< /Title <${titleHex}> /Producer (image-processing) >>`));
+  pages.forEach((p, i) => {
+    const pid = 4 + 3 * i, cid = pid + 1, iid = pid + 2;
+    obj(pid, () => push(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${PDF_W} ${PDF_H}] /Resources << /XObject << /Im0 ${iid} 0 R >> >> /Contents ${cid} 0 R >>`));
+    const content = `q ${PDF_W} 0 0 ${PDF_H} 0 0 cm /Im0 Do Q`;
+    obj(cid, () => push(`<< /Length ${content.length} >>\nstream\n${content}\nendstream`));
+    obj(iid, () => {
+      push(`<< /Type /XObject /Subtype /Image /Width ${p.w} /Height ${p.h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${p.jpeg.length} >>\nstream\n`);
+      push(p.jpeg);
+      push("\nendstream");
+    });
+  });
+  const count = 4 + 3 * pages.length;
+  const xref = pos;
+  push(`xref\n0 ${count}\n0000000000 65535 f \n`);
+  for (let id = 1; id < count; id++) push(`${String(offsets[id]).padStart(10, "0")} 00000 n \n`);
+  push(`trailer\n<< /Size ${count} /Root 1 0 R /Info 3 0 R >>\nstartxref\n${xref}\n%%EOF\n`);
+  return new Blob(chunks, { type: "application/pdf" });
+}
+
+async function buildSubmission(name, klass) {
+  if (document.fonts && document.fonts.load) {
+    await Promise.race([
+      Promise.all([document.fonts.load(`700 24px ${PDF_SANS}`), document.fonts.load(`400 12px ${PDF_SANS}`), document.fonts.load(`9.5px ${PDF_MONO}`)]).catch(() => {}),
+      new Promise((r) => setTimeout(r, 2000)),
+    ]);
+  }
+  const measure = document.createElement("canvas").getContext("2d");
+  const pages = paginate(submissionBlocks(name, klass), measure);
+  const images = [];
+  for (let i = 0; i < pages.length; i++) {
+    const c = drawPdfPage(pages[i], i, pages.length);
+    images.push({ w: c.width, h: c.height, jpeg: await canvasToJpeg(c) });
+  }
+  return makePdf(images, `הגשה: עיבוד תמונה - ${name}`);
 }
 
 $("export-btn").addEventListener("click", () => {
@@ -3001,16 +3048,25 @@ $("export-btn").addEventListener("click", () => {
   $("export-name").focus();
 });
 $("export-cancel").addEventListener("click", () => closeDialog($("export-dialog")));
-$("export-form").addEventListener("submit", (e) => {
+$("export-form").addEventListener("submit", async (e) => {
   e.preventDefault();
   const name = $("export-name").value.trim();
   const klass = $("export-class").value.trim();
   if (!name) { $("export-name").focus(); return; }
   try { localStorage.setItem(STUDENT_KEY, JSON.stringify({ name, klass })); } catch (err) { /* אין אחסון */ }
-  const blob = buildSubmission(name, klass);
+  const submit = $("export-form").querySelector("button[type=submit]");
+  submit.disabled = true;
+  submit.textContent = "מכין את הקובץ…";
+  let blob;
+  try {
+    blob = await buildSubmission(name, klass);
+  } finally {
+    submit.disabled = false;
+    submit.textContent = "הורדה";
+  }
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = `הגשה - עיבוד תמונה - ${name.replace(/[\\/:*?"<>|]/g, "")}.docx`;
+  a.download = `הגשה - עיבוד תמונה - ${name.replace(/[\\/:*?"<>|]/g, "")}.pdf`;
   document.body.append(a);
   a.click();
   a.remove();
@@ -3086,16 +3142,24 @@ Engine.onState((st, kind, message) => {
 });
 
 /* ================================================================
-   מסך הפתיחה: לכל שאלה, השוואה מתחלפת בין התמונה לתוצאה
+   מסך הפתיחה: קולאז' של התמונות בגדלים שונים. כל תמונה מתחלפת לאט בין המקור לתוצאה.
    ================================================================ */
 const SPLASH_SIDE = 160;
 let splashActive = false;
 
-function startQuestions(index) {
+/* סדר התמונות בקולאז' (מספר השאלה פחות 1). ארבע הראשונות גדולות. */
+const SPLASH_ORDER = [5, 4, 7, 1, 2, 6, 3, 11, 8, 10, 0, 9];
+/* פריסות אפשריות. לכל תמונה: [עמודה, שורה, גודל]. נבחרת הפריסה שבה התמונות הכי גדולות. */
+const SPLASH_LAYOUTS = [
+  { cols: 8, rows: 3, tiles: [[1, 1, 2], [3, 2, 2], [5, 1, 2], [7, 2, 2], [3, 1, 1], [4, 1, 1], [7, 1, 1], [8, 1, 1], [1, 3, 1], [2, 3, 1], [5, 3, 1], [6, 3, 1]] },
+  { cols: 6, rows: 4, tiles: [[1, 1, 2], [4, 1, 2], [2, 3, 2], [5, 3, 2], [3, 1, 1], [6, 1, 1], [3, 2, 1], [6, 2, 1], [1, 3, 1], [4, 3, 1], [1, 4, 1], [4, 4, 1]] },
+  { cols: 4, rows: 6, tiles: [[1, 1, 2], [3, 2, 2], [1, 4, 2], [3, 5, 2], [3, 1, 1], [4, 1, 1], [1, 3, 1], [2, 3, 1], [3, 4, 1], [4, 4, 1], [1, 6, 1], [2, 6, 1]] },
+];
+
+function startQuestions() {
   if (!splashActive) return;
   splashActive = false;
   Engine.cancel("splash");
-  if (Number.isInteger(index)) state.index = index;
   $("splash").hidden = true;
   document.documentElement.classList.remove("has-splash");
   window.removeEventListener("resize", layoutSplash);
@@ -3104,34 +3168,26 @@ function startQuestions(index) {
 
 function layoutSplash() {
   const grid = $("splash-grid");
-  const cards = [...grid.children];
-  const W = grid.clientWidth, H = grid.clientHeight, gap = 12, n = cards.length;
-  const pad = 16;
+  const W = grid.clientWidth, H = grid.clientHeight;
+  const gap = Math.round(Math.max(6, Math.min(12, Math.min(W, H) / 60)));
   let best = null;
-  for (let c = 1; c <= n; c++) {
-    const r = Math.ceil(n / c);
-    const cw = (W - gap * (c - 1)) / c;
-    const ch = (H - gap * (r - 1)) / r;
-    const titleH = cw < 170 ? 42 : 30;   // בכרטיס צר הכותרת נפרשת על שתי שורות
-    const mw = cw - pad - 2, mh = ch - titleH - pad - 4;   // כולל המסגרות של הכרטיס
-    if (mw <= 0 || mh <= 0) continue;
-    const size = Math.min(mw, mh);   // תמונות הפתיחה מרובעות
-    if (!best || size > best.size) best = { c, r, mw, mh, cw, size };
+  for (const L of SPLASH_LAYOUTS) {
+    const cell = Math.floor(Math.min((W - gap * (L.cols - 1)) / L.cols, (H - gap * (L.rows - 1)) / L.rows));
+    if (!best || cell > best.cell) best = { L, cell };
   }
-  if (!best) return;
-  grid.style.gridTemplateColumns = `repeat(${best.c}, minmax(0, 1fr))`;
-  grid.style.gridTemplateRows = `repeat(${best.r}, max-content)`;
-  grid.classList.toggle("is-tight", best.cw < 170);
-  cards.forEach((card) => {
-    const stack = card.querySelector(".s-stack");
-    const ar = Number(stack.dataset.ar) || 1;
-    const w = Math.max(10, Math.min(best.mw, best.mh * ar));
-    stack.style.width = `${Math.floor(w)}px`;
-    stack.style.height = `${Math.floor(w / ar)}px`;
+  if (!best || best.cell <= 0) return;
+  const { L, cell } = best;
+  grid.style.gap = `${gap}px`;
+  grid.style.gridTemplateColumns = `repeat(${L.cols}, ${cell}px)`;
+  grid.style.gridTemplateRows = `repeat(${L.rows}, ${cell}px)`;
+  [...grid.children].forEach((tile, k) => {
+    const [c, r, span] = L.tiles[k];
+    tile.style.gridColumn = `${c} / span ${span}`;
+    tile.style.gridRow = `${r} / span ${span}`;
   });
 }
 
-async function fillSplashCard(q, card, attempt = 0) {
+async function fillSplashTile(q, tile, attempt = 0) {
   const side = Math.min(SPLASH_SIDE, maxSide());
   if (document.fonts && document.fonts.ready) {
     await Promise.race([document.fonts.ready, new Promise((r) => setTimeout(r, 1500))]);
@@ -3139,25 +3195,21 @@ async function fillSplashCard(q, card, attempt = 0) {
   const slots = {};
   const [mainSpec, ...rest] = q.images;
   try {
-    slots[mainSpec.name] = await buildSlot(q, mainSpec, null, side);
-    for (const spec of rest) slots[spec.name] = await buildSlot(q, spec, slots[mainSpec.name], side);
+    slots[mainSpec.name] = await buildSlot(q, mainSpec, null, side, true);
+    for (const spec of rest) slots[spec.name] = await buildSlot(q, spec, slots[mainSpec.name], side, true);
   } catch (err) {
     console.warn("מסך הפתיחה: התמונה לא נטענה", q.id, err);
     return;
   }
   const main = slots[mainSpec.name];
   const from = slots[q.splashFrom || mainSpec.name];
-  const stack = card.querySelector(".s-stack");
-  stack.dataset.ar = String(main.w / main.h);
-  const [before, after] = stack.querySelectorAll("canvas");
+  const [before, after] = tile.querySelectorAll("canvas");
   drawRgba(before, from.w, from.h, from.rgba);
-  stack.classList.add("is-loaded");
-  layoutSplash();
   const data = await Engine.run(buildPayload(q, { slots, json: null }, "", "preview"), undefined, "splash");
-  if (data.status === "engine-switch" && attempt < 1 && splashActive) return fillSplashCard(q, card, attempt + 1);
+  if (data.status === "engine-switch" && attempt < 1 && splashActive) return fillSplashTile(q, tile, attempt + 1);
   if (data.status !== "preview" || !data.flat) return;
   drawRgba(after, main.w, main.h, flatToRgba(data.flat, main.w, main.h));
-  card.classList.add("is-live");
+  tile.classList.add("is-live");
 }
 
 function showSplash() {
@@ -3165,33 +3217,22 @@ function showSplash() {
   document.documentElement.classList.add("has-splash");
   const grid = $("splash-grid");
   grid.replaceChildren();
-  QUESTIONS.forEach((q, i) => {
-    const card = el("button", "s-card");
-    card.type = "button";
-    if (q.bonus) card.classList.add("is-bonus");
-    if (state.solved[q.id]) card.classList.add("is-solved");
-    card.style.setProperty("--d", `${-(i * 0.6).toFixed(1)}s`);
-    card.style.setProperty("--i", String(i));
-    const title = questionTitle(i);
-    card.title = title;
-    card.setAttribute("aria-label", `${title}${q.bonus ? " (בונוס)" : ""}`);
-    const media = el("span", "s-media");
+  const order = SPLASH_ORDER.filter((i) => i < QUESTIONS.length).slice(0, 12);
+  order.forEach((qi, k) => {
+    const tile = el("div", "s-tile");
+    tile.style.setProperty("--d", `${-(k * 0.7).toFixed(1)}s`);
+    tile.style.setProperty("--i", String(k));
     const stack = el("span", "s-stack");
-    stack.dataset.ar = "1";
     stack.append(document.createElement("canvas"), document.createElement("canvas"), el("span", "s-line"));
     stack.children[1].className = "s-after";
-    media.append(stack);
-    const t = el("span", "s-title");
-    t.append(el("span", null, title));
-    card.append(t, media);
-    card.addEventListener("click", () => startQuestions(i));
-    grid.append(card);
+    tile.append(stack);
+    grid.append(tile);
   });
   $("splash").hidden = false;
   $("splash").classList.add("is-on");
   layoutSplash();
   window.addEventListener("resize", layoutSplash);
-  QUESTIONS.forEach((q, i) => fillSplashCard(q, grid.children[i]));
+  order.forEach((qi, k) => fillSplashTile(QUESTIONS[qi], grid.children[k]));
 }
 $("start-btn").addEventListener("click", () => startQuestions());
 
